@@ -1,0 +1,221 @@
+{
+  "auto_reset_on_login_expired": {
+    "description": "登录失效时自动重置",
+    "type": "bool",
+    "hint": "当检测到 QQ 空间登录失效时，自动清空已保存的 Cookies 并重新从协议端获取",
+    "default": true
+  },
+  "send_feedback": {
+    "description": "发送反馈",
+    "type": "bool",
+    "hint": "是否在执行操作(发布/删除/评论/点赞)时返回反馈信息",
+    "default": true
+  },
+  "analyze_images_on_view_feed": {
+    "description": "查看说说时分析图片",
+    "type": "bool",
+    "hint": "开启后，查看带图说说时调用框架视觉模型分析图片内容并附在返回中(每条最多 3 张)",
+    "default": false
+  },
+  "feed_cache_max_size": {
+    "description": "说说缓存数量",
+    "type": "int",
+    "hint": "最多缓存多少条已查询到的说说内容；设为 0 可关闭缓存",
+    "slider": { "min": 0, "max": 500, "step": 1 },
+    "default": 50
+  },
+  "feed_cache_ttl_seconds": {
+    "description": "说说缓存时间（秒）",
+    "type": "int",
+    "hint": "缓存有效期。有效期内再次查询相同位置的说说时复用正文、图片和图片分析，只刷新评论内容；设为 0 可关闭缓存",
+    "slider": { "min": 0, "max": 86400, "step": 60 },
+    "default": 1800
+  },
+  "timeout": {
+    "description": "请求超时时间",
+    "type": "int",
+    "hint": "网络请求超时时间（秒）",
+    "slider": { "min": 5, "max": 60, "step": 1 },
+    "default": 10
+  },
+  "request_interval": {
+    "description": "QQ空间请求最小间隔（秒）",
+    "type": "float",
+    "hint": "每次请求前至少等待该时长，降低限流概率",
+    "slider": { "min": 0, "max": 5, "step": 0.1 },
+    "default": 0.8
+  },
+  "request_jitter": {
+    "description": "QQ空间请求随机抖动（秒）",
+    "type": "float",
+    "hint": "在最小间隔基础上增加 0~该值的随机延时",
+    "slider": { "min": 0, "max": 3, "step": 0.1 },
+    "default": 0.6
+  },
+  "comment_reply_enabled": {
+    "description": "自动回复评论（自己说说收到新评论）",
+    "type": "bool",
+    "hint": "开启后周期扫描自己的说说，发现新评论用 LLM 生成回复（回复该评论）",
+    "default": false
+  },
+  "atme_reply_enabled": {
+    "description": "自动回复被@",
+    "type": "bool",
+    "hint": "开启后周期检测「被 @」并 LLM 生成回复",
+    "default": false
+  },
+  "atme_mode": {
+    "description": "被@检测模式",
+    "type": "string",
+    "hint": "api=调用「与我相关」接口（内置，开箱即用，推荐）；feeds_scan=扫描好友动态流正文/评论中的 @bot昵称",
+    "default": "api"
+  },
+  "atme_api_url": {
+    "description": "「与我相关」接口 URL（高级覆盖）",
+    "type": "string",
+    "hint": "留空使用内置接口（已实测验证）。仅当腾讯改版接口失效时才需要覆盖",
+    "default": ""
+  },
+  "atme_match_keyword": {
+    "description": "被@条目匹配词（api 模式）",
+    "type": "string",
+    "hint": "「与我相关」条目文本含该词才回复（默认 \"@\"，被@条目文本总是含 @昵称 标记；赞/访问/评论不含）",
+    "default": "@"
+  },
+  "atme_keyword": {
+    "description": "被@匹配词（feeds_scan 模式）",
+    "type": "string",
+    "hint": "动态流中出现该词即视为被@。留空自动用「@bot昵称」",
+    "default": ""
+  },
+  "scan_interval_sec": {
+    "description": "自动回复轮询间隔（秒）",
+    "type": "int",
+    "hint": "周期扫描间隔，过密可能触发空间风控",
+    "slider": { "min": 60, "max": 3600, "step": 30 },
+    "default": 300
+  },
+  "scan_count": {
+    "description": "每轮扫描说说条数",
+    "type": "int",
+    "hint": "每轮检查自己最新多少条说说的评论",
+    "slider": { "min": 1, "max": 20, "step": 1 },
+    "default": 10
+  },
+  "max_comment_age_sec": {
+    "description": "评论最大回复时限（秒）",
+    "type": "int",
+    "hint": "只回复该时间内的新评论（0=不限），防止停机后补回复积压旧评论",
+    "slider": { "min": 0, "max": 604800, "step": 3600 },
+    "default": 86400
+  },
+  "max_replies_per_post": {
+    "description": "单条说说自动回复上限",
+    "type": "int",
+    "hint": "同一条说说下本 bot 最多自动回复多少次（0=不限）。被@与被评论共用计数",
+    "slider": { "min": 0, "max": 50, "step": 1 },
+    "default": 10
+  },
+  "auto_reply_max_length": {
+    "description": "生成回复最大长度（字）",
+    "type": "int",
+    "hint": "LLM 生成回复的截断长度",
+    "slider": { "min": 20, "max": 200, "step": 10 },
+    "default": 60
+  },
+  "auto_reply_prompt": {
+    "description": "回复生成提示词模板",
+    "type": "text",
+    "hint": "占位符：{nick}=对方昵称，{content}=对方说的内容，{post}=说说内容。system 侧自动附加 bot 人设",
+    "default": "你的QQ好友 {nick} 在QQ空间里与你互动：\"{content}\"\n相关说说内容：\"{post}\"\n请以 bot 的口吻写一条自然、口语化的回复。"
+  },
+  "auto_reply_fallback": {
+    "description": "回复生成失败兜底文案",
+    "type": "string",
+    "hint": "LLM 不可用/生成失败时发送，{nick} 可用",
+    "default": "谢谢你的互动~"
+  },
+  "auto_publish_enabled": {
+    "description": "主动发说说总开关",
+    "type": "bool",
+    "hint": "开启后按每日计划自动发说说（内容由 LLM 按 bot 人设生成）",
+    "default": false
+  },
+  "auto_publish_daily_count": {
+    "description": "每天发布条数",
+    "type": "int",
+    "hint": "每天在时间窗内随机抽取该数量的时刻发布（0=不发）",
+    "slider": { "min": 0, "max": 10, "step": 1 },
+    "default": 2
+  },
+  "auto_publish_window_start": {
+    "description": "允许发布起始时间",
+    "type": "string",
+    "hint": "HH:MM（北京时间）",
+    "default": "09:00"
+  },
+  "auto_publish_window_end": {
+    "description": "允许发布结束时间",
+    "type": "string",
+    "hint": "HH:MM（北京时间）",
+    "default": "22:30"
+  },
+  "auto_publish_min_gap_sec": {
+    "description": "相邻发布最小间隔（秒）",
+    "type": "int",
+    "hint": "同一天两条说说的最小间隔",
+    "slider": { "min": 600, "max": 28800, "step": 600 },
+    "default": 7200
+  },
+  "auto_publish_topic_ttl_sec": {
+    "description": "互动话题时效（秒）",
+    "type": "int",
+    "hint": "从互动记忆提炼的话题词超过该时长自动丢弃（默认 12 小时）",
+    "slider": { "min": 3600, "max": 172800, "step": 3600 },
+    "default": 43200
+  },
+  "auto_publish_topics": {
+    "description": "静态话题池（可叠加）",
+    "type": "list",
+    "hint": "逗号分隔。与互动话题池合并随机取用；互动记忆为空时的兜底素材",
+    "default": []
+  },
+  "auto_publish_max_length": {
+    "description": "说说字数上限",
+    "type": "int",
+    "hint": "生成说说的截断长度",
+    "slider": { "min": 40, "max": 300, "step": 10 },
+    "default": 120
+  },
+  "auto_publish_exclude_bots": {
+    "description": "排除的 bot",
+    "type": "list",
+    "hint": "bot_id 或 QQ 号，这些 bot 不参与主动发说说",
+    "default": []
+  },
+  "auto_publish_notify_admin": {
+    "description": "发布后通知管理员",
+    "type": "bool",
+    "hint": "每次主动发布成功后私聊通知全局管理员",
+    "default": false
+  },
+  "auto_publish_notify_group": {
+    "description": "发布后通知群",
+    "type": "string",
+    "hint": "主动发布成功后由该 bot 在此群里发一条通知（含说说内容）；留空关闭。审核预览也发在此群",
+    "default": "1070473353"
+  },
+  "auto_publish_review": {
+    "description": "先审后发",
+    "type": "bool",
+    "hint": "开启后每日计划的说说先发预览到通知群，管理员 /说说过审 <编号> 通过后才真正发布（/发日常 不走审核）；超时自动通过",
+    "default": true
+  },
+  "auto_publish_review_timeout_sec": {
+    "description": "审核超时（秒）",
+    "type": "int",
+    "hint": "预览发出后超过该时长未审 → 自动通过发布",
+    "slider": { "min": 300, "max": 86400, "step": 300 },
+    "default": 7200
+  }
+}

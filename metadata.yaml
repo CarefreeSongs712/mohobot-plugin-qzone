@@ -1,0 +1,10 @@
+name: qzone
+author: CarefreeSongs712
+display_name: QQ 空间
+version: 1.0.0
+description: QQ 空间发布与浏览
+repo: https://github.com/CarefreeSongs712/mohobot-plugin-qzone
+license: MIT
+api_version: 1
+mohobot_version: ">=0.1.0"
+tags: [qzone]
